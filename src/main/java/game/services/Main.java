@@ -1,6 +1,6 @@
 package game.services;
 
-import game.objects.GameFool;
+import game.models.GameFool;
 
 public class Main {
 

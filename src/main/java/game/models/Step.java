@@ -1,4 +1,4 @@
-package game.objects;
+package game.models;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

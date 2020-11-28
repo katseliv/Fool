@@ -4,12 +4,11 @@ import game.enums.CardSuit;
 import game.enums.Condition;
 import game.enums.RankOfCards;
 import game.exceptions.OutOfLimitException;
-import game.objects.*;
+import game.models.*;
 
 import java.util.*;
 
 public class Service {
-
 
     public void start(GameFool gameFool, int amountOfPlayers, int amountOfCards) throws OutOfLimitException {
         initialization(gameFool, amountOfPlayers, amountOfCards);
@@ -19,22 +18,21 @@ public class Service {
     }
 
     private void initialization(GameFool gameFool, int amountOfPlayers, int amountOfCards) throws OutOfLimitException {
-        if (amountOfPlayers <= 6 && amountOfCards == 36) {
+        if (amountOfPlayers <= 6 && amountOfCards == RankOfCards.SMALL_DECK.length) {
             initializationPlayers(gameFool, amountOfPlayers);
             List<Card> cards = initializationCards(gameFool, amountOfCards);
             shuffleCards(cards);
-        } else if (amountOfPlayers <= 8 && amountOfCards == 52) {
+        } else if (amountOfPlayers <= 8 && amountOfCards == RankOfCards.BIG_DECK.length) {
             initializationPlayers(gameFool, amountOfPlayers);
             List<Card> cards = initializationCards(gameFool, amountOfCards);
             shuffleCards(cards);
         } else {
             throw new OutOfLimitException("Too much players");
         }
-
     }
 
     private void initializationPlayers(GameFool gameFool, int amount) {
-        PrinterService printer = new PrinterService();
+        PrintService printer = new PrintService();
         CyclicList<Player> players = gameFool.getPlayers();
         for (int i = 1; i <= amount; i++) {
             players.add(new Player(i));
@@ -104,7 +102,7 @@ public class Service {
 
     private void playTillTheEnd(GameFool gameFool) {
         OperationService operation = new OperationService();
-        PrinterService printer = new PrinterService();
+        PrintService printer = new PrintService();
         CyclicList<Player> players = gameFool.getPlayers();
 
         printer.printConditionOfGame("start");
@@ -152,7 +150,7 @@ public class Service {
 
     private boolean firstAttackInGame(GameFool gameFool, Player player) {
         OperationService operation = new OperationService();
-        PrinterService printer = new PrinterService();
+        PrintService printer = new PrintService();
         Map<Player, Set<Card>> ratio = gameFool.getRatio();
 
         try {
@@ -206,7 +204,7 @@ public class Service {
 
     private boolean tossUpInGame(GameFool gameFool) {
         OperationService operation = new OperationService();
-        PrinterService printer = new PrinterService();
+        PrintService printer = new PrintService();
         CyclicList<Player> players = gameFool.getPlayers();
 
         int countCardsForTossUp = 0;
@@ -262,7 +260,7 @@ public class Service {
         OperationService operation = new OperationService();
         List<Card> cardsForRemoving = new ArrayList<>();
         List<Card> beatOffCards = new ArrayList<>();
-        PrinterService printer = new PrinterService();
+        PrintService printer = new PrintService();
 
         int number = countCardsForTossUp;
         int limit = gameFool.NUMBER_CARDS_FOR_TOSS_UP;

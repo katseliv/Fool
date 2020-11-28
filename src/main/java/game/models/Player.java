@@ -1,4 +1,4 @@
-package game.objects;
+package game.models;
 
 public class Player {
     private final int name;

@@ -1,10 +1,10 @@
 package game.services;
 
-import game.objects.Card;
-import game.objects.CyclicList;
-import game.objects.Player;
+import game.models.Card;
+import game.models.CyclicList;
+import game.models.Player;
 
-public class PrinterService {
+public class PrintService {
 
     public void printPlayers(CyclicList<Player> list, int amount) {
         int counter = 0;

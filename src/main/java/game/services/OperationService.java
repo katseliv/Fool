@@ -1,9 +1,9 @@
 package game.services;
 
-import game.objects.Card;
-import game.objects.GameFool;
-import game.objects.Player;
-import game.objects.Step;
+import game.models.Card;
+import game.models.GameFool;
+import game.models.Player;
+import game.models.Step;
 
 import java.util.*;
 
@@ -110,7 +110,7 @@ public class OperationService {
 
     public boolean isFinalStepForPlayer(GameFool gameFool, Player player) {
         Map<Player, Set<Card>> ratio = gameFool.getRatio();
-        PrinterService printer = new PrinterService();
+        PrintService printer = new PrintService();
 
         if (ratio.get(player).size() == 0 && gameFool.getCards().size() == 0 && gameFool.getPlayers().getSize() != 1) {
             printer.printConditionOfPlayers("winner", player);

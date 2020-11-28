@@ -1,4 +1,4 @@
-package game.objects;
+package game.models;
 
 import game.enums.CardSuit;
 import game.enums.RankOfCards;
