@@ -1,12 +1,12 @@
-package game.printer;
+package game.services;
 
 import game.objects.Card;
 import game.objects.CyclicList;
 import game.objects.Player;
 
-public class Printer {
+public class PrinterService {
 
-    public static void printPlayers(CyclicList<Player> list, int amount) {
+    public void printPlayers(CyclicList<Player> list, int amount) {
         int counter = 0;
 
         for (Player player : list) {
@@ -20,7 +20,7 @@ public class Printer {
         System.out.println();
     }
 
-    public static void printConditionOfGame(String string) {
+    public void printConditionOfGame(String string) {
         final String BLACK = "\u001B[30m";
         final String RED = "\u001B[31m";
         final String GREEN = "\u001B[32m";
@@ -45,7 +45,7 @@ public class Printer {
         }
     }
 
-    public static void printConditionOfPlayers(String string, Player player) {
+    public void printConditionOfPlayers(String string, Player player) {
         final String BLACK = "\u001B[30m";
         final String RED = "\u001B[31m";
         final String GREEN = "\u001B[32m";
@@ -67,7 +67,7 @@ public class Printer {
         }
     }
 
-    public static void printProcessOfGame(String string, Player player, Card card) {
+    public void printProcessOfGame(String string, Player player, Card card) {
         switch (string) {
             case "attack":
                 System.out.println("\nAttack: " + card + " from Player " + player.getName());

@@ -1,6 +1,6 @@
 package game.objects;
 
-import game.printer.Printer;
+import game.services.PrinterService;
 
 import java.util.*;
 
@@ -77,13 +77,14 @@ public class GameFool {
     }
 
     public boolean isEnd() {
+        PrinterService printer = new PrinterService();
         if (cards.size() == 0 && players.getSize() == 1) {
-            Printer.printConditionOfGame("game is over");
+            printer.printConditionOfGame("game is over");
             for (Player player : players) {
                 setPlayerFool(player);
                 break;
             }
-            Printer.printConditionOfPlayers("fool", playerFool);
+            printer.printConditionOfPlayers("fool", playerFool);
             System.out.println(toString());
             return true;
         }

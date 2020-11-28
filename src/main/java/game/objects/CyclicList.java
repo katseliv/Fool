@@ -105,6 +105,11 @@ public class CyclicList<T> implements Iterable<T> {
                 return result;
             }
 
+            @Override
+            public void remove() {
+
+            }
+
         };
     }
 
