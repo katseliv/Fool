@@ -22,14 +22,14 @@ public class Card {
 
     @Override
     public String toString() {
-        final String ANSI_RED = "\u001B[31m";
-        final String ANSI_BLACK = "\u001B[30m";
+        final String RED = "\u001B[31m";
+        final String BLACK = "\u001B[30m";
 
-        String color = ANSI_BLACK;
-        if(suit == CardSuit.HEARTS || suit == CardSuit.DIAMONDS){
-            color = ANSI_RED;
+        String color = BLACK;
+        if (suit == CardSuit.HEARTS || suit == CardSuit.DIAMONDS) {
+            color = RED;
         }
 
-        return  "\n" + ANSI_BLACK + "Rank = " + color + rank.getRank() + ANSI_BLACK +" Suit = " + color + suit.getSign() + ANSI_BLACK;
+        return "\n" + BLACK + "Rank = " + color + rank.getRank() + BLACK + " Suit = " + color + suit.getSign() + BLACK;
     }
 }

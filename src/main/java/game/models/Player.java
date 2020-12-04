@@ -13,9 +13,9 @@ public class Player {
 
     @Override
     public String toString() {
-        final String ANSI_GREEN = "\u001B[32m";
-        final String ANSI_BLACK = "\u001B[30m";
+        final String GREEN = "\u001B[32m";
+        final String BLACK = "\u001B[30m";
 
-        return ANSI_GREEN + "\nPlayer: " + ANSI_BLACK + name;
+        return GREEN + "\nPlayer: " + BLACK + name;
     }
 }

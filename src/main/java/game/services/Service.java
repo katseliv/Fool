@@ -18,11 +18,11 @@ public class Service {
     }
 
     private void initialization(GameFool gameFool, int amountOfPlayers, int amountOfCards) throws OutOfLimitException {
-        if (amountOfPlayers <= 6 && amountOfCards == RankOfCards.SMALL_DECK.length) {
+        if (amountOfPlayers <= 6 && amountOfCards == 36) {
             initializationPlayers(gameFool, amountOfPlayers);
             List<Card> cards = initializationCards(gameFool, amountOfCards);
             shuffleCards(cards);
-        } else if (amountOfPlayers <= 8 && amountOfCards == RankOfCards.BIG_DECK.length) {
+        } else if (amountOfPlayers <= 8 && amountOfCards == 52) {
             initializationPlayers(gameFool, amountOfPlayers);
             List<Card> cards = initializationCards(gameFool, amountOfCards);
             shuffleCards(cards);
