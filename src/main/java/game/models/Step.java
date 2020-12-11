@@ -2,26 +2,41 @@ package game.models;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Step {
-    private final Player target; //на кого нападают (цель)
-    LinkedHashMap<Player, HashMap<Card, Card>> list = new LinkedHashMap<>();
+    private Player target;
+    private Map<Player, HashMap<Card, Card>> list = new LinkedHashMap<>();
 
     public Step(Player target) {
         this.target = target;
+    }
+
+    public Step(){
+        this(null);
     }
 
     public Player getTarget() {
         return target;
     }
 
-    public LinkedHashMap<Player, HashMap<Card, Card>> getList() {
+    public void setTarget(Player target) {
+        this.target = target;
+    }
+
+    public Map<Player, HashMap<Card, Card>> getList() {
         return list;
+    }
+
+    public void setList(Map<Player, HashMap<Card, Card>> list) {
+        this.list = list;
     }
 
     @Override
     public String toString() {
         final String BLUE = "\u001B[34m";
-        return BLUE + "Step {" + "\ntarget = " + target + ", \nlist = " + list + '}';
+        final String WHITE = "\u001B[38m";
+
+        return BLUE + "\nStep" + WHITE + "{" + BLUE + "\ntarget = " + target + ", " + BLUE + "\nlist = " + WHITE + list + '}';
     }
 }

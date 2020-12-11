@@ -1,7 +1,11 @@
 package game.models;
 
 public class Player {
-    private final int name;
+    private int name;
+
+    public Player() {
+
+    }
 
     public Player(int name) {
         this.name = name;
@@ -11,11 +15,15 @@ public class Player {
         return name;
     }
 
+    public void setName(int name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         final String GREEN = "\u001B[32m";
-        final String BLACK = "\u001B[30m";
+        final String WHITE = "\u001B[38m";
 
-        return GREEN + "\nPlayer: " + BLACK + name;
+        return GREEN + "\nPlayer: " + WHITE + name;
     }
 }

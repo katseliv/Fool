@@ -1,0 +1,181 @@
+{
+  "Trump": {
+    "Rank": "DAME",
+    "Suit": "CLUBS"
+  },
+  "Miss Turn": false,
+  "Attack Player": "Player 2",
+  "Target Player": "Player 2",
+  "Fool Player": "Player 2",
+  "Players": [
+    "Player 1",
+    "Player 2",
+    "Player 3"
+  ],
+  "Cards": [
+    {
+      "Rank": "DAME",
+      "Suit": "SPADES"
+    },
+    {
+      "Rank": "SIX",
+      "Suit": "CLUBS"
+    },
+    {
+      "Rank": "TEN",
+      "Suit": "SPADES"
+    },
+    {
+      "Rank": "ACE",
+      "Suit": "CLUBS"
+    },
+    {
+      "Rank": "DAME",
+      "Suit": "DIAMONDS"
+    },
+    {
+      "Rank": "SEVEN",
+      "Suit": "HEARTS"
+    },
+    {
+      "Rank": "TEN",
+      "Suit": "DIAMONDS"
+    },
+    {
+      "Rank": "SIX",
+      "Suit": "HEARTS"
+    },
+    {
+      "Rank": "KING",
+      "Suit": "CLUBS"
+    },
+    {
+      "Rank": "ACE",
+      "Suit": "DIAMONDS"
+    },
+    {
+      "Rank": "DAME",
+      "Suit": "HEARTS"
+    },
+    {
+      "Rank": "JACK",
+      "Suit": "SPADES"
+    },
+    {
+      "Rank": "SEVEN",
+      "Suit": "CLUBS"
+    },
+    {
+      "Rank": "EIGHT",
+      "Suit": "DIAMONDS"
+    },
+    {
+      "Rank": "KING",
+      "Suit": "SPADES"
+    },
+    {
+      "Rank": "DAME",
+      "Suit": "CLUBS"
+    }
+  ],
+  "Cards on the table": [],
+  "Ratio": {
+    "Player 1": [
+      {
+        "Rank": "JACK",
+        "Suit": "HEARTS"
+      },
+      {
+        "Rank": "JACK",
+        "Suit": "DIAMONDS"
+      },
+      {
+        "Rank": "ACE",
+        "Suit": "SPADES"
+      },
+      {
+        "Rank": "KING",
+        "Suit": "DIAMONDS"
+      },
+      {
+        "Rank": "NINE",
+        "Suit": "HEARTS"
+      },
+      {
+        "Rank": "KING",
+        "Suit": "HEARTS"
+      }
+    ],
+    "Player 2": [
+      {
+        "Rank": "SEVEN",
+        "Suit": "DIAMONDS"
+      },
+      {
+        "Rank": "EIGHT",
+        "Suit": "SPADES"
+      },
+      {
+        "Rank": "JACK",
+        "Suit": "CLUBS"
+      },
+      {
+        "Rank": "SIX",
+        "Suit": "DIAMONDS"
+      },
+      {
+        "Rank": "TEN",
+        "Suit": "HEARTS"
+      },
+      {
+        "Rank": "NINE",
+        "Suit": "SPADES"
+      }
+    ],
+    "Player 3": [
+      {
+        "Rank": "TEN",
+        "Suit": "CLUBS"
+      },
+      {
+        "Rank": "EIGHT",
+        "Suit": "HEARTS"
+      },
+      {
+        "Rank": "NINE",
+        "Suit": "CLUBS"
+      },
+      {
+        "Rank": "ACE",
+        "Suit": "HEARTS"
+      },
+      {
+        "Rank": "NINE",
+        "Suit": "DIAMONDS"
+      },
+      {
+        "Rank": "EIGHT",
+        "Suit": "CLUBS"
+      }
+    ]
+  },
+  "Steps": [
+    {
+      "Target": "Player 2",
+      "Step": {
+        "Player 1": [
+          [
+            {
+              "Rank": "SIX",
+              "Suit": "SPADES"
+            },
+            {
+              "Rank": "SEVEN",
+              "Suit": "SPADES"
+            }
+          ]
+        ]
+      }
+    }
+  ]
+}

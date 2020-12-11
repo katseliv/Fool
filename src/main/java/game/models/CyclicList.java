@@ -1,14 +1,14 @@
 package game.models;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 public class CyclicList<T> implements Iterable<T> {
-
-    class ListNode {
+    class Node {
         private final T value;
-        private ListNode next;
+        private Node next;
 
-        ListNode(T value, ListNode next) {
+        Node(T value, Node next) {
             this.value = value;
             this.next = next;
         }
@@ -17,21 +17,21 @@ public class CyclicList<T> implements Iterable<T> {
             return value;
         }
 
-        public ListNode getNext() {
+        public Node getNext() {
             return next;
         }
 
     }
 
-    private ListNode head = null;
-    private ListNode tail = null;
-    private int size = 0;
+    private transient Node head = null;
+    private transient Node tail = null;
+    private transient int size = 0;
 
     public void add(T value) {
         if (head == null) {
-            head = tail = new ListNode(value, null);
+            head = tail = new Node(value, null);
         } else {
-            tail.next = new ListNode(value, null);
+            tail.next = new Node(value, null);
             tail = tail.next;
             tail.next = head;
         }
@@ -69,7 +69,7 @@ public class CyclicList<T> implements Iterable<T> {
             return;                 //и выходим
         }
 
-        ListNode element = head;                //иначе начинаем искать
+        Node element = head;                //иначе начинаем искать
         while (element.next != null) {          //пока следующий элемент существует
             if (element.next.value == value) {  //проверяем следующий элемент
                 if (tail == element.next) {     //если он последний
@@ -91,7 +91,7 @@ public class CyclicList<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return new Iterator<T>() {
-            private ListNode current = head;
+            private Node current = head;
 
             @Override
             public boolean hasNext() {
@@ -113,4 +113,22 @@ public class CyclicList<T> implements Iterable<T> {
         };
     }
 
+    public Object[] toArray() {
+        Object[] values = new Object[this.size];
+        if (size > 1) {
+            values[0] = this.head.value;
+            int count = 1;
+            for (Node node = this.head.next; node != this.head; node = node.next) {
+                values[count++] = node.value;
+            }
+        } else {
+            values[0] = this.head.value;
+        }
+        return values;
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(this.toArray());
+    }
 }

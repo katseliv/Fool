@@ -1,24 +1,20 @@
 package game.models;
 
-import game.services.PrintService;
-
 import java.util.*;
 
 public class GameFool {
     private Card trump;
     private boolean isMissTurn = false;
-
     private Player playerAttack = null;
     private Player playerTarget = null;
-    private Player playerFool;
-
-    public final int NUMBER_OF_CARDS = 6;
-    public final int NUMBER_CARDS_FOR_TOSS_UP = NUMBER_OF_CARDS - 1;
+    private Player playerFool = null;
+    public transient final int NUMBER_OF_CARDS = 6;
+    public transient final int NUMBER_CARDS_FOR_TOSS_UP = NUMBER_OF_CARDS - 1;
     private final CyclicList<Player> players = new CyclicList<>();
-    private final Map<Player, Set<Card>> ratio = new HashMap<>();
     private final List<Card> cardsOnTheTable = new ArrayList<>();
-    private final List<Card> cards = new ArrayList<>();
-    private final List<Step> steps = new ArrayList<>();
+    private Map<Player, Set<Card>> ratio = new LinkedHashMap<>();
+    private List<Card> cards = new ArrayList<>();
+    private List<Step> steps = new ArrayList<>();
 
     public CyclicList<Player> getPlayers() {
         return players;
@@ -32,12 +28,24 @@ public class GameFool {
         return cards;
     }
 
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
     public List<Step> getSteps() {
         return steps;
     }
 
+    public void setSteps(List<Step> steps) {
+        this.steps = steps;
+    }
+
     public Map<Player, Set<Card>> getRatio() {
         return ratio;
+    }
+
+    public void setRatio(Map<Player, Set<Card>> ratio) {
+        this.ratio = ratio;
     }
 
     public Card getTrump() {
@@ -64,6 +72,10 @@ public class GameFool {
         this.playerTarget = playerTarget;
     }
 
+    public Player getPlayerFool() {
+        return playerFool;
+    }
+
     public void setPlayerFool(Player playerFool) {
         this.playerFool = playerFool;
     }
@@ -76,33 +88,16 @@ public class GameFool {
         isMissTurn = missTurn;
     }
 
-    public boolean isEnd() {
-        PrintService printer = new PrintService();
-        if (cards.size() == 0 && players.getSize() == 1) {
-            printer.printConditionOfGame("game is over");
-            for (Player player : players) {
-                setPlayerFool(player);
-                break;
-            }
-            printer.printConditionOfPlayers("fool", playerFool);
-            System.out.println(toString());
-            return true;
-        }
-
-        return false;
-    }
-
     @Override
     public String toString() {
-        final String BLACK = "\u001B[30m";
         final String PURPLE = "\u001B[35m";
+        final String WHITE = "\u001B[38m";
 
-        return BLACK + PURPLE + " \nGameFool {"
-                + "\nplayers = " + players.getSize()
-                + ",\ncards = " + cards + PURPLE
+        return PURPLE + " \nGameFool " + WHITE + "{" + PURPLE
+                + "\nplayers = " + WHITE + players + PURPLE
+                + ",\ncards = " + WHITE + cards + PURPLE
                 + "\nlength = " + cards.size()
-                + ", steps = " + steps
-                + ", ratio = " + ratio + '}';
+                + ", ratio = " + WHITE + ratio + PURPLE;
+//                + ", steps = " + steps + '}';
     }
-
 }

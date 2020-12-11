@@ -2,13 +2,19 @@ package game.services;
 
 import game.enums.CardSuit;
 import game.enums.Condition;
+import game.enums.ConditionOfPlayer;
 import game.enums.RankOfCards;
 import game.exceptions.OutOfLimitException;
 import game.models.*;
 
+import java.io.File;
 import java.util.*;
 
 public class Service {
+    private final OperationService operation = new OperationService();
+    private final PrintService printer = new PrintService();
+    private final FileService fileService = new FileService();
+    private int number = 1;
 
     public void start(GameFool gameFool, int amountOfPlayers, int amountOfCards) throws OutOfLimitException {
         initialization(gameFool, amountOfPlayers, amountOfCards);
@@ -32,12 +38,11 @@ public class Service {
     }
 
     private void initializationPlayers(GameFool gameFool, int amount) {
-        PrintService printer = new PrintService();
         CyclicList<Player> players = gameFool.getPlayers();
         for (int i = 1; i <= amount; i++) {
             players.add(new Player(i));
         }
-        printer.printPlayers(players, amount);
+        printer.printInitialization(gameFool, Condition.CREATE_PLAYERS);
     }
 
     private List<Card> initializationCards(GameFool gameFool, int amountOfCards) {
@@ -86,8 +91,7 @@ public class Service {
             }
 
         }
-        final String BLUE = "\u001B[34m";
-        System.out.println(BLUE + "\nDistribution of cards: " + gameFool);
+        printer.printInitialization(gameFool, Condition.DISTRIBUTION);
     }
 
     private void chooseTrump(GameFool gameFool) {
@@ -97,30 +101,30 @@ public class Service {
         cards.remove(firstIndex);
         cards.add(cards.size(), gameFool.getTrump());
 
-        System.out.println("\nTrump = " + gameFool.getTrump());
+        printer.printInitialization(gameFool, Condition.CHOOSE_TRUMP);
     }
 
     private void playTillTheEnd(GameFool gameFool) {
         OperationService operation = new OperationService();
-        PrintService printer = new PrintService();
         CyclicList<Player> players = gameFool.getPlayers();
 
-        printer.printConditionOfGame("start");
+        printer.printConditionOfGame(Condition.START);
 
         for (Player player : players) {
+            System.out.println("Чувак в цикле " + player.getName());
             if (operation.isFinalStepForPlayer(gameFool, player)) {
                 continue;
             }
 
             if (checkCondition(gameFool, player, Condition.NEXT_STEP)) {
-                if (gameFool.isEnd()) {
+                if (isEnd(gameFool)) {
                     break;
                 }
                 continue;
             }
 
             if (checkCondition(gameFool, player, Condition.TOSS_UP)) {
-                if (gameFool.isEnd()) {
+                if (isEnd(gameFool)) {
                     break;
                 }
             }
@@ -132,6 +136,13 @@ public class Service {
             missTurn(gameFool);
             gameFool.getCardsOnTheTable().clear();
             System.out.println(gameFool);
+
+            if (number == 1) {
+                fileService.writeFile(gameFool, new File("files/fool.json"));
+                fileService.readFile(new File("files/fool.json"));
+                System.out.println("\n\u001B[34m" + "Serialization complete !!!\n" + gameFool);
+                number++;
+            }
         }
     }
 
@@ -149,8 +160,6 @@ public class Service {
     }
 
     private boolean firstAttackInGame(GameFool gameFool, Player player) {
-        OperationService operation = new OperationService();
-        PrintService printer = new PrintService();
         Map<Player, Set<Card>> ratio = gameFool.getRatio();
 
         try {
@@ -158,12 +167,12 @@ public class Service {
                 gameFool.setPlayerAttack(player);
                 return true;
             }
-            printer.printConditionOfPlayers("attack", gameFool.getPlayerAttack());
+            printer.printConditionOfPlayers(ConditionOfPlayer.ATTACK, gameFool.getPlayerAttack());
             gameFool.setPlayerTarget(player);
-            printer.printConditionOfPlayers("target", gameFool.getPlayerTarget());
+            printer.printConditionOfPlayers(ConditionOfPlayer.TARGET, gameFool.getPlayerTarget());
 
             Card attackCard = operation.attack(gameFool, gameFool.getPlayerAttack());
-            printer.printProcessOfGame("attack", gameFool.getPlayerAttack(), attackCard);
+            printer.printProcessOfGame(Condition.ATTACK, gameFool.getPlayerAttack(), attackCard);
 
             if (operation.isFinalStepForPlayer(gameFool, gameFool.getPlayerAttack())) {
                 gameFool.getPlayers().remove(gameFool.getPlayerAttack());
@@ -173,17 +182,19 @@ public class Service {
             gameFool.getCardsOnTheTable().add(attackCard);
 
             Card beatOffCard = operation.beatOffOneCard(gameFool, gameFool.getPlayerTarget(), attackCard);
-            //Operation.addSteps(gameFool, gameFool.getPlayerAttack(), gameFool.getPlayerTarget(), attackCard, beatOffCard);
+
             if (beatOffCard != null) {
                 gameFool.getCardsOnTheTable().add(beatOffCard);
-                printer.printProcessOfGame("beat off", gameFool.getPlayerTarget(), beatOffCard);
+                printer.printProcessOfGame(Condition.BEAT_OFF, gameFool.getPlayerTarget(), beatOffCard);
             } else {
                 ratio.get(gameFool.getPlayerTarget()).addAll(gameFool.getCardsOnTheTable());
                 gameFool.setMissTurn(true);
                 missTurn(gameFool);
-                printer.printConditionOfGame("no beat off attack cards");
+                printer.printConditionOfGame(Condition.NO_BEAT_OFF_ATTACK_CARD);
                 return true;
             }
+
+            operation.addSteps(gameFool, gameFool.getPlayerAttack(), gameFool.getPlayerTarget(), attackCard, beatOffCard);
 
             if (operation.isFinalStepForPlayer(gameFool, gameFool.getPlayerTarget())) {
                 gameFool.getPlayers().remove(gameFool.getPlayerTarget());
@@ -203,14 +214,12 @@ public class Service {
     }
 
     private boolean tossUpInGame(GameFool gameFool) {
-        OperationService operation = new OperationService();
-        PrintService printer = new PrintService();
         CyclicList<Player> players = gameFool.getPlayers();
 
         int countCardsForTossUp = 0;
         int countNoTossUpPlayers = 0;
 
-        printer.printConditionOfGame("toss up");
+        printer.printConditionOfGame(Condition.TOSS_UP);
         try {
             for (Player playerTossUp : players) {
                 if (playerTossUp.getName() == gameFool.getPlayerTarget().getName()) {
@@ -257,10 +266,8 @@ public class Service {
 
     private int beatOffInGame(GameFool gameFool, Player attackPlayer, int countCardsForTossUp) {
         Set<Card> cardsOfPlayer = gameFool.getRatio().get(attackPlayer);
-        OperationService operation = new OperationService();
         List<Card> cardsForRemoving = new ArrayList<>();
         List<Card> beatOffCards = new ArrayList<>();
-        PrintService printer = new PrintService();
 
         int number = countCardsForTossUp;
         int limit = gameFool.NUMBER_CARDS_FOR_TOSS_UP;
@@ -268,21 +275,21 @@ public class Service {
         for (Card cardOnTheTable : gameFool.getCardsOnTheTable()) {
             for (Card cardForTossUp : cardsOfPlayer) {
                 if (cardOnTheTable.getRank().equals(cardForTossUp.getRank()) && number <= limit) {
-                    System.out.print("\nAttack" + cardForTossUp + " from Player " + attackPlayer.getName());
+                    System.out.print("\nAttack: " + cardForTossUp + " from Player " + attackPlayer.getName());
                     Card cardBeatOff = operation.beatOffOneCard(gameFool, gameFool.getPlayerTarget(), cardForTossUp);
 
-                    //Operation.addSteps(gameFool, attackPlayer, gameFool.getPlayerTarget(), cardForTossUp, cardBeatOff);
+                    operation.addSteps(gameFool, attackPlayer, gameFool.getPlayerTarget(), cardForTossUp, cardBeatOff);
                     if (operation.isFinalStepForPlayer(gameFool, gameFool.getPlayerTarget())) {
                         gameFool.getPlayers().remove(gameFool.getPlayerTarget());
                         gameFool.setPlayerTarget(null);
-                        System.out.println("\nBeat Off" + cardBeatOff + "\n");
+                        System.out.println("\nBeat Off: " + cardBeatOff + "\n");
                         cardsForRemoving.add(cardForTossUp);
                         cardsOfPlayer.removeAll(cardsForRemoving);
                         return -2;
                     }
 
                     if (cardBeatOff == null) {
-                        printer.printConditionOfGame("no beat off");
+                        printer.printConditionOfGame(Condition.NO_BEAT_OFF);
                         System.out.println(gameFool);
 
                         beatOffCards.add(cardForTossUp);
@@ -300,7 +307,7 @@ public class Service {
                     beatOffCards.add(cardBeatOff);
                     beatOffCards.add(cardForTossUp);
 
-                    System.out.println("\nBeat Off" + cardBeatOff + "\n");
+                    System.out.println("\nBeat Off: " + cardBeatOff + "\n");
                     cardsForRemoving.add(cardForTossUp);
                     number++;
 
@@ -326,4 +333,19 @@ public class Service {
         }
     }
 
+    private boolean isEnd(GameFool gameFool) {
+        PrintService printer = new PrintService();
+        if (gameFool.getCards().size() == 0 && gameFool.getPlayers().getSize() == 1) {
+            printer.printConditionOfGame(Condition.GAME_IS_OVER);
+            for (Player player : gameFool.getPlayers()) {
+                gameFool.setPlayerFool(player);
+                break;
+            }
+            printer.printConditionOfPlayers(ConditionOfPlayer.FOOL, gameFool.getPlayerFool());
+            System.out.println(gameFool);
+            return true;
+        }
+
+        return false;
+    }
 }

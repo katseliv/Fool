@@ -1,18 +1,18 @@
 package game.enums;
 
 public enum CardSuit {
-    CLUBS('\u2663'),
-    DIAMONDS('\u2666'),
-    SPADES('\u2660'),
-    HEARTS('\u2764');
+    CLUBS("\u001B[30m\u2663"),
+    DIAMONDS("\u001B[31m\u2666"),
+    SPADES("\u001B[30m\u2660"),
+    HEARTS("\u001B[31m\u2764");
 
-    private final char sign;
+    private final String sign;
 
-    CardSuit(char sign) {
+    CardSuit(String sign) {
         this.sign = sign;
     }
 
-    public char getSign() {
+    public String getSign() {
         return sign;
     }
 

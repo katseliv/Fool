@@ -1,5 +1,6 @@
 package game.services;
 
+import game.enums.ConditionOfPlayer;
 import game.models.Card;
 import game.models.GameFool;
 import game.models.Player;
@@ -75,7 +76,6 @@ public class OperationService {
     }
 
     public void giveCards(GameFool gameFool) {
-        //System.out.print("\u001B[34m" + "\nGive cards:" + "\u001B[30m");
         Map<Player, Set<Card>> ratio = gameFool.getRatio();
         List<Card> cards = gameFool.getCards();
         List<Card> cardsRemoving = new ArrayList<>();
@@ -95,7 +95,6 @@ public class OperationService {
                 cards.removeAll(cardsRemoving);
             }
         }
-        //System.out.print(gameFool);
     }
 
     public void addSteps(GameFool gameFool, Player playerAttack, Player playerTarget, Card attackCard, Card beatOffCard) {
@@ -105,7 +104,6 @@ public class OperationService {
         cardHashMap.put(attackCard, beatOffCard);
         step.getList().put(playerAttack, cardHashMap);
         steps.add(step);
-        System.out.println(step);
     }
 
     public boolean isFinalStepForPlayer(GameFool gameFool, Player player) {
@@ -113,7 +111,7 @@ public class OperationService {
         PrintService printer = new PrintService();
 
         if (ratio.get(player).size() == 0 && gameFool.getCards().size() == 0 && gameFool.getPlayers().getSize() != 1) {
-            printer.printConditionOfPlayers("winner", player);
+            printer.printConditionOfPlayers(ConditionOfPlayer.WINNER, player);
             return true;
         }
 
